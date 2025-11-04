@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kakei10</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>kakei10</h1>
+        <p>10秒で入力、今月が一目でわかる</p>
+        <button>支出</button>
+        <button>収入</button>
+    </header>
+
+    <main>
+        <section>
+            <form>
+                <div>
+                    <label>日付</label>
+                    <input type="date" name="dateISO" required>
+                </div>
+                <div>
+                    <label>金額</label>
+                    <input name="amount" inputmode="numeric" pattern="[0-9,]*" reqired>
+                </div>
+
+                <div>
+                    <label>カテゴリ</label>
+                    <select name="category" required>
+                        <option>食費</option>
+                        <option>日用品</option>
+                        <option>交通費</option>
+                        <option>趣味・娯楽</option>
+                        <option>美容</option>
+                        <option>医療・健康</option>
+                        <option>教育・教養</option>
+                        <option>光熱費</option>
+                        <option>通信費</option>
+                        <option>家賃</option>
+                        <option>その他</option>
+                    </select>
+                    <label for="">カテゴリ</label>
+                    <select name="category2" id="">
+                        <option value="">給料</option>
+                        <option value="">副業</option>
+                        <option value="">お小遣い</option>
+                    </select>
+                    
+                </div>
+                <div>
+                    <label>メモ</label>
+                    <input name="memo">
+                </div>
+                <button type="submit">入力</button>
+            </form>
+        </section>
+    </main>
+</body>
+
+</html>
