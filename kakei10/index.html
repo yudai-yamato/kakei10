@@ -12,20 +12,20 @@
     <header>
         <h1>kakei10</h1>
         <p>10秒で入力、今月が一目でわかる</p>
-        <button>支出</button>
-        <button>収入</button>
+        <button id="btn-expense" type="button">支出</button>
+        <button id="btn-income" type="button">収入</button>
     </header>
 
     <main>
         <section>
-            <form>
+            <form id="entryForm">
                 <div>
                     <label>日付</label>
                     <input type="date" name="dateISO" required>
                 </div>
                 <div>
                     <label>金額</label>
-                    <input name="amount" inputmode="numeric" pattern="[0-9,]*" reqired>
+                    <input name="amount" inputmode="numeric" pattern="[0-9,]*" required>
                 </div>
 
                 <div>
@@ -45,12 +45,13 @@
                     </select>
                     <label for="">カテゴリ</label>
                     <select name="category2" id="">
-                        <option value="">給料</option>
-                        <option value="">副業</option>
-                        <option value="">お小遣い</option>
+                        <option value="給料">給料</option>
+                        <option value="副業">副業</option>
+                        <option value="お小遣い">お小遣い</option>
                     </select>
                     
                 </div>
+                <input type="hidden" name="type" id="type" value="expense">
                 <div>
                     <label>メモ</label>
                     <input name="memo">
@@ -59,6 +60,7 @@
             </form>
         </section>
     </main>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
