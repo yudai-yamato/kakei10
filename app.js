@@ -6,11 +6,18 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-const db = new sqlite3.Database('./kakei.db');
+const db = new sqlite3.Database('./kakei.db', (err) => {
+    if (err) {
+        console.error('Failed to open DB:', err);
+    } else {
+        console.log('Connected to SQLite DB at ./kakei.db');
+    }
+});
 
 app.post('/transactions', (req, res) => {
     const { date, type, category, amount, note } = req.body;
-    if (!date || !type || !category || !amount === undefined) return res.status(400).json({ error: '必須項目が不足しています' });
+    // amount は数値である必要があるが、0 を許容しないため null/undefined のチェック
+    if (!date || !type || amount === undefined || amount === null) return res.status(400).json({ error: '必須項目が不足しています' });
     if (type !== 'income' && type !== 'expense') return res.status(400).json({ error: 'typeは"income"または"expense"である必要があります' });
     if (isNaN(Number(amount))) return res.status(400).json({ error: 'amountは数値である必要があります' });
 
