@@ -30,7 +30,7 @@
                 <div class="card">
                     <div class="muted">総支出</div>
                     <div id="totalExpense" aria-live="polite">--</div>
-                </div>    
+                </div>
             </div>
         </section>
 
@@ -41,9 +41,12 @@
 
         <section>
             <h2>デバッグ</h2>
-            
+            <div id="rawResponse" class="muted" style="white-space:pre-wrap; font-family:monospace; display:none;"></div>
+            <div id="error" class="error" role="alert" style="display:none;"></div>
         </section>
     </main>
+
+    <script src="js/summary.js"></script>
 </body>
 
 </html>
