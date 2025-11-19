@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>収支サマリー -kakei10-</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>収支サマリー</h1>
+            <div class="muted">総収入・総支出の集計</div>
+        </div>
+        <nav>
+            <a href="index.html">入力画面へ戻る</a>
+        </nav>
+    </header>
+
+    <main>
+        <section aria-labelledbyd="overview-title">
+            <h2 id="overview-title">概要</h2>
+            <div class="summary-grid">
+                <div class="card">
+                    <div class="muted">総収入</div>
+                    <div id="totalIncome" aria-live="polite">--</div>
+                </div>
+                <div class="card">
+                    <div class="muted">総支出</div>
+                    <div id="totalExpense" aria-live="polite">--</div>
+                </div>    
+            </div>
+        </section>
+
+        <section>
+            <h2 id="categories-title">カテゴリ別集計</h2>
+            <div id="categories" class="muted">読み込み中</div>
+        </section>
+
+        <section>
+            <h2>デバッグ</h2>
+            
+        </section>
+    </main>
+</body>
+
+</html>
