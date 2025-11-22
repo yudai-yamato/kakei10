@@ -4,28 +4,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnExpense = document.getElementById('btn-expense');
     const btnIncome = document.getElementById('btn-income');
     const typeInput = document.getElementById('type');
+    const categorySelect = document.getElementById('category-select');
 
-    //初期状態を支出に設定
+    // カテゴリ候補（支出/収入）
+    const expenseCategories = [
+        '食費', '日用品', '交通費', '趣味・娯楽', '美容', '医療・健康', '教育・教養', '光熱費', '通信費', '家賃', 'その他'
+    ];
+    const incomeCategories = ['給料', '副業', 'お小遣い'];
+
+    // 初期状態を支出に設定（カテゴリを埋める）
     setType('expense');
 
     //クリックイベント
     btnExpense.addEventListener('click', () => setType('expense'));
     btnIncome.addEventListener('click', () => setType('income'));
 
-    //タイプ設定
+    // カテゴリを select に反映するヘルパー
+    function populateCategories(list) {
+        if (!categorySelect) return;
+        categorySelect.innerHTML = '';
+        list.forEach(name => {
+            const opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = name;
+            categorySelect.appendChild(opt);
+        });
+        categorySelect.required = true;
+    }
+
+    // タイプ設定
     function setType(t) {
         typeInput.value = t;
         if (t === 'income') {
-            btnExpense.classList.add('active');
-            btnIncome.classList.remove('active');
-        } else {
             btnIncome.classList.add('active');
             btnExpense.classList.remove('active');
+            populateCategories(incomeCategories);
+        } else {
+            btnExpense.classList.add('active');
+            btnIncome.classList.remove('active');
+            populateCategories(expenseCategories);
         }
     }
 
     //フォーム送信
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         //入力内容の取得
@@ -44,14 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        //カテゴリの判定
+        //カテゴリの判定（単一 select から取得）
         const type = formData.get('type') || 'expense';
-        let category = '';
-        if (type === 'income') {
-            category = formData.get('category2') || formData.get('category') || 'その他';
-        } else {
-            category = formData.get('category') || formData.get('category2') || 'その他';
-        }
+        const category = formData.get('category') || 'その他';
 
         //メモの取得
         const note = formData.get('memo') || '';
