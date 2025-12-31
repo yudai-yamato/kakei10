@@ -44,7 +44,49 @@ document.addEventListener('DOMContentLoaded', () => {
                         const li = document.createElement('li');
                         const cat = it.category || '未分類';
                         const tot = Number(it.total || 0).toLocaleString();
-                        li.textContent = `${cat}： ${tot}`;
+                        // カテゴリ名と金額をインラインで表示
+                        const textSpan = document.createElement('span');
+                        textSpan.textContent = `${cat}： ${tot}`;
+                        li.appendChild(textSpan);
+
+                        // memos があれば、最初の数件をインラインで表示
+                        if (Array.isArray(it.memos) && it.memos.length > 0) {
+                            const previewSpan = document.createElement('span');
+                            previewSpan.style.marginLeft = '10px';
+                            previewSpan.style.fontSize = '0.9em';
+                            previewSpan.style.color = '#666';
+
+                            const first = it.memos.slice(0, 3);
+                            // 空文字メモもそのまま要素にする（表示は空欄として見える）
+                            previewSpan.textContent = first.join(', ');
+                            li.appendChild(previewSpan);
+
+                            // 多ければ「さらに N 件」ボタンで全件表示（展開）
+                            if (it.memos.length > 3) {
+                                const more = document.createElement('button');
+                                more.textContent = `さらに ${it.memos.length - 3} 件`;
+                                more.style.marginLeft = '8px';
+                                more.style.fontSize = '0.8em';
+                                more.addEventListener('click', () => {
+                                    // 展開用の下位リストを作成
+                                    const memoUl = document.createElement('ul');
+                                    memoUl.style.margin = '6px 0 0 12px';
+                                    it.memos.forEach(memoText => {
+                                        const memoLi = document.createElement('li');
+                                        memoLi.textContent = `メモ: ${memoText}`;
+                                        memoLi.style.fontSize = '0.9em';
+                                        memoLi.style.color = '#666';
+                                        memoUl.appendChild(memoLi);
+                                    });
+                                    // ボタンを消して下に追加
+                                    more.remove();
+                                    li.appendChild(document.createElement('br'));
+                                    li.appendChild(memoUl);
+                                });
+                                li.appendChild(more);
+                            }
+                        }
+
                         ul.appendChild(li);
                     });
                     elCategories.appendChild(ul);
