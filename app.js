@@ -22,7 +22,9 @@ app.post('/transactions', (req, res) => {
     if (isNaN(Number(amount))) return res.status(400).json({ error: 'amountは数値である必要があります' });
 
     const sql = `INSERT INTO transactions (date, type, category, amount, note) VALUES (?, ?, ?, ?, ?)`;
-    db.run(sql, [date, type, category || null,Math.floor(Number(amount)),note || null], function(err) {
+    // note は空文字も許容するため、undefined のみを NULL に変換
+    const noteParam = (note === undefined ? null : note);
+    db.run(sql, [date, type, category || null, Math.floor(Number(amount)), noteParam], function(err) {
         if (err) return res.status(500).json({ error: 'DBエラー' });
         res.json({ id: this.lastID });
     });
@@ -56,9 +58,18 @@ app.get('/totals', (req, res) => {
         }),
         // カテゴリ別集計
         new Promise((resolve, reject) => {
-            db.all('SELECT type, category, SUM(amount) as total FROM transactions GROUP BY type, category', (err, rows) => {
+            db.all('SELECT type, category, SUM(amount) as total, GROUP_CONCAT(note, "||") as memo FROM transactions GROUP BY type, category', (err, rows) => {
                 if (err) reject(err);
-                else resolve(rows);
+                else {
+                    const normalized = rows.map(r => ({
+                        type: r.type,
+                        category: r.category,
+                        total: r.total,
+                        // memo が NULL の場合は空配列、文字列の場合は '||' 区切りで配列化（空文字もそのまま要素にする）
+                        memos: (r.memo === null ? [] : r.memo.split('||'))
+                    }));
+                    resolve(normalized);
+                }
             });
         })
     ];
